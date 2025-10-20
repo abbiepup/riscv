@@ -1,4 +1,5 @@
 use core::arch::asm;
+use core::ptr::NonNull;
 
 mod vsetvli;
 pub use vsetvli::*;
@@ -155,4 +156,13 @@ pub fn cpopw(value: u32) -> u32 {
     let result;
     unsafe { asm!("cpopw {}, {}", out(reg) result, in(reg) value, options(pure, nomem, nostack)) };
     result
+}
+
+/// Atomic fetch-and-swap word.
+#[inline]
+#[target_feature(enable = "a")]
+pub fn amoswap_w(value: u32, address: NonNull<u32>) -> u32 {
+    let old;
+    unsafe { asm!("amoswap.w {}, {}, ({})", out(reg) old, in(reg) value, in(reg) address.as_ptr(), options(nostack)) };
+    old
 }
