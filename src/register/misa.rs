@@ -30,18 +30,7 @@ impl Default for XLEN {
     }
 }
 
-impl TryFrom<usize> for XLEN {
-    type Error = ();
 
-    fn try_from(xlen: usize) -> Result<Self, Self::Error> {
-        match xlen {
-            1 => Ok(Self::X32),
-            2 => Ok(Self::X64),
-            3 => Ok(Self::X128),
-            _ => Err(()),
-        }
-    }
-}
 
 #[repr(transparent)]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
@@ -70,6 +59,27 @@ impl Extension {
     pub const S: Self = Self(1 << 18);
     /// User mode implemented.
     pub const U: Self = Self(1 << 20);
+}
+
+impl TryFrom<char> for Extension {
+    type Error = ();
+
+    fn try_from(value: char) -> Result<Self, Self::Error> {
+        Ok(match value {
+            'A' => Self::A,
+            'C' => Self::C,
+            'D' => Self::D,
+            'E' => Self::E,
+            'F' => Self::F,
+            'H' => Self::H,
+            'I' => Self::I,
+            'M' => Self::M,
+            'Q' => Self::Q,
+            'S' => Self::S,
+            'U' => Self::U,
+            _ => return Err(()),
+        })
+    }
 }
 
 impl BitOr for Extension {

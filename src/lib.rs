@@ -13,9 +13,10 @@ mod instruction;
 mod register;
 
 pub use address::*;
-use core::marker::ConstParamTy;
 pub use instruction::*;
 pub use register::*;
+
+use core::marker::ConstParamTy;
 
 /// Vector register group multiplier.
 #[repr(u8)]
@@ -70,14 +71,27 @@ pub enum XLEN {
     X128 = 3,
 }
 
+impl TryFrom<usize> for XLEN {
+    type Error = ();
+
+    fn try_from(xlen: usize) -> Result<Self, Self::Error> {
+        match xlen {
+            1 => Ok(Self::X32),
+            2 => Ok(Self::X64),
+            3 => Ok(Self::X128),
+            _ => Err(()),
+        }
+    }
+}
+
 /// Selected element width.
 #[repr(u8)]
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SEW {
-    S8 = 0,
-    S16 = 1,
-    S32 = 2,
-    S64 = 3,
-    S128 = 4,
+    E8 = 0,
+    E16 = 1,
+    E32 = 2,
+    E64 = 3,
+    E128 = 4,
 }
