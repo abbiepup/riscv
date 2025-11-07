@@ -23,12 +23,19 @@ use core::marker::ConstParamTy;
 #[non_exhaustive]
 #[derive(ConstParamTy, PartialEq, Eq)]
 pub enum LMUL {
+    /// 1× multiplier
     M1 = 0b000,
+    /// 2× multiplier.
     M2 = 0b001,
+    /// 4× multiplier.  
     M4 = 0b010,
+    /// 8× multiplier. 
     M8 = 0b011,
+    /// ½× fractional multiplier. 
     MF2 = 0b100,
+    /// ¼× fractional multiplier.  
     MF4 = 0b101,
+    /// ⅛× fractional multiplier.
     MF8 = 0b110,
 }
 
@@ -89,9 +96,14 @@ impl TryFrom<usize> for XLEN {
 #[non_exhaustive]
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum SEW {
+    /// Selected [`u8`] element width.
     E8 = 0,
+    /// Selected [`u16`] element width.
     E16 = 1,
+    /// Selected [`u32`] element width.
     E32 = 2,
+    /// Selected [`u64`] element width.
     E64 = 3,
+    /// Selected [`u128`] element width.
     E128 = 4,
 }

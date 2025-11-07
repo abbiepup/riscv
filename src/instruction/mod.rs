@@ -5,7 +5,7 @@ mod vsetvli;
 pub use atomic::*;
 pub use vsetvli::*;
 
-/// Generates the `nop` instruction.
+/// No operation.
 #[inline]
 pub fn nop() {
     unsafe { asm!("nop", options(nomem, nostack, preserves_flags)) };
@@ -158,6 +158,7 @@ pub fn xor(lhs: usize, rhs: usize) -> usize {
     result
 }
 
+/// Set on less than.
 #[inline]
 pub fn slt(lhs: usize, rhs: usize) -> usize {
     let result;
@@ -199,6 +200,7 @@ pub fn div(lhs: usize, rhs: usize) -> usize {
     result
 }
 
+/// Signed remainder.
 #[inline]
 #[target_feature(enable = "m")]
 pub fn rem(lhs: usize, rhs: usize) -> usize {
@@ -231,5 +233,19 @@ pub fn fadd_d(lhs: f64, rhs: f64) -> f64 {
 pub fn sh1add(lhs: usize, rhs: usize) -> usize {
     let result;
     unsafe { asm!("sh1add {}, {}, {}", lateout(reg) result, in(reg) lhs, in(reg) rhs, options(pure, nomem, nostack)) };
+    result
+}
+
+#[inline]
+pub fn neg(value: usize) -> usize {
+    let result;
+    unsafe { asm!("neg {}, {}", lateout(reg) result, in(reg) value, options(pure, nomem, nostack)) }
+    result
+}
+
+#[inline]
+pub fn negw(value: u32) -> u32 {
+    let result;
+    unsafe { asm!("negw {}, {}", lateout(reg) result, in(reg) value, options(pure, nomem, nostack)) }
     result
 }
